@@ -48,20 +48,24 @@ export default function KernelMonolithCanvas() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting for outer frame
-    const ambientLight = new THREE.AmbientLight(0x222630, 2.5);
+    // 4. Lighting
+    const ambientLight = new THREE.AmbientLight(0x0e1117, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.5);
+    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.2);
     keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.0);
+    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.5);
     rimLight.position.set(-5, -2, -2);
     scene.add(rimLight);
+
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    topLight.position.set(0, 6, 2);
+    scene.add(topLight);
 
     // 5. Monolith Hierarchy Group
     const monolithGroup = new THREE.Group();
@@ -115,9 +119,13 @@ export default function KernelMonolithCanvas() {
     canvasTexture.minFilter = THREE.LinearFilter;
     canvasTexture.magFilter = THREE.LinearFilter;
 
-    // Use MeshBasicMaterial for 100% full brightness and true color without light falloff/dimming
-    const photoMat = new THREE.MeshBasicMaterial({
+    // Photo Physical Material
+    const photoMat = new THREE.MeshPhysicalMaterial({
       map: canvasTexture,
+      roughness: 0.25,
+      metalness: 0.05,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.15,
     });
 
     const photoGeo = new THREE.PlaneGeometry(width * 0.91, height * 0.92);
@@ -218,22 +226,35 @@ export default function KernelMonolithCanvas() {
         drawCoverImage(toImg, Math.min(1, Math.max(0, progress)), toConf.focalX ?? 0.5, toConf.focalY ?? 0.5);
       }
 
-      // No dim vignette overlay: keep photos punchy, sharp, and vivid
+      // Dim effect vignette overlay for normal web view
+      if (!isMobile) {
+        const gradient = ctx.createRadialGradient(
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.width * 0.35,
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.width * 0.8
+        );
+        gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        gradient.addColorStop(1, "rgba(8, 10, 15, 0.45)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
       ctx.globalAlpha = 1.0;
       canvasTexture.needsUpdate = true;
     }
 
-    // 7. Initial Pose
-    // On mobile: strictly straight and upright (0, 0, 0).
-    // On desktop: stately subtle isometric angle.
-    let targetRotX = isMobile ? 0 : 0.16;
-    let targetRotY = isMobile ? 0 : -0.32;
+    // 7. Initial Pose (Slanted for both mobile and desktop)
+    let targetRotX = 0.16;
+    let targetRotY = -0.32;
     let currentRotX = targetRotX;
     let currentRotY = targetRotY;
 
     monolithGroup.rotation.x = currentRotX;
     monolithGroup.rotation.y = currentRotY;
-    monolithGroup.rotation.z = 0;
+    monolithGroup.rotation.z = 0.04;
 
     // 8. Mouse Tracking Physics (Desktop only)
     const handlePointerMove = (e: MouseEvent) => {
@@ -289,11 +310,11 @@ export default function KernelMonolithCanvas() {
 
       if (!prefersReducedMotion) {
         if (isMobile) {
-          // Mobile: strictly straight and upright, dancing gently up and down
+          // Mobile: slanted pose as requested, dancing gently up and down
           monolithGroup.position.y = Math.sin(elapsedTime * 1.6) * 0.07;
-          monolithGroup.rotation.x = 0;
-          monolithGroup.rotation.y = 0;
-          monolithGroup.rotation.z = 0;
+          monolithGroup.rotation.x = 0.16;
+          monolithGroup.rotation.y = -0.32;
+          monolithGroup.rotation.z = 0.04;
         } else {
           // Desktop: subtle idle buoyancy + mouse tracking
           monolithGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.05;
@@ -314,16 +335,12 @@ export default function KernelMonolithCanvas() {
     // 10. Resize
     const handleResize = () => {
       if (!container) return;
+      const prevMobile = isMobile;
       isMobile = window.innerWidth < 768;
-      if (isMobile) {
-        targetRotX = 0;
-        targetRotY = 0;
-        currentRotX = 0;
-        currentRotY = 0;
-        monolithGroup.rotation.set(0, 0, 0);
-      } else {
-        targetRotX = 0.16;
-        targetRotY = -0.32;
+      targetRotX = 0.16;
+      targetRotY = -0.32;
+      if (prevMobile !== isMobile) {
+        drawSlideshow(activeIdx, activeIdx, 1);
       }
       const w = container.clientWidth;
       const h = container.clientHeight;
