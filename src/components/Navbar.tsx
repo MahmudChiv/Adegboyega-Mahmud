@@ -74,6 +74,17 @@ export default function Navbar() {
 
             <div className="h-3 w-[1px] bg-white/15" />
 
+            {/* CV */}
+            <a
+              href="/Mahmud_Adegboyega_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-1 text-white/80 hover:text-white transition-colors"
+            >
+              <span>CV</span>
+              <ArrowUpRight className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
+            </a>
+
             {/* WhatsApp */}
             <a
               href="https://wa.me/2348164247735"
@@ -138,7 +149,16 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          <div className="pt-4 border-t border-white/8 flex items-center gap-6 font-mono text-xs">
+          <div className="pt-4 border-t border-white/8 flex flex-wrap items-center gap-6 font-mono text-xs">
+            <a
+              href="/Mahmud_Adegboyega_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-white/90 hover:text-white font-medium"
+            >
+              <span>CV (PDF)</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-white/50" />
+            </a>
             <a
               href="https://wa.me/2348164247735"
               target="_blank"

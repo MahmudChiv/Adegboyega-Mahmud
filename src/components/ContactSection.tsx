@@ -177,7 +177,16 @@ export default function ContactSection() {
       </div>
 
       {/* Directory & Profile Outlets */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-16 font-mono text-xs">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-16 font-mono text-xs">
+        <a
+          href="/Mahmud_Adegboyega_CV.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
+        >
+          <span>CV (PDF)</span>
+          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+        </a>
         <a
           href="https://github.com/MahmudChiv"
           target="_blank"

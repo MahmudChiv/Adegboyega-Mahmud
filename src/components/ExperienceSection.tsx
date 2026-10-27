@@ -13,6 +13,8 @@ import {
   Award,
   Terminal,
   ExternalLink,
+  FileText,
+  ArrowUpRight,
 } from "lucide-react";
 
 export default function ExperienceSection() {
@@ -47,7 +49,7 @@ export default function ExperienceSection() {
       className="relative z-10 w-full py-24 sm:py-32 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto border-t border-white/8"
     >
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-20 gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 sm:mb-20 gap-6">
         <div>
           <div className="font-mono text-xs tracking-widest text-accent uppercase mb-3 flex items-center gap-2">
             <span>[02]</span>
@@ -58,6 +60,17 @@ export default function ExperienceSection() {
             Experience & Education
           </h2>
         </div>
+
+        <a
+          href="/Mahmud_Adegboyega_CV.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/35 text-white font-mono text-xs tracking-wider transition-all self-start sm:self-auto shrink-0"
+        >
+          <FileText className="w-3.5 h-3.5 text-white/60 group-hover:text-white transition-colors" />
+          <span>VIEW FULL CV (PDF)</span>
+          <ArrowUpRight className="w-3.5 h-3.5 text-white/40 group-hover:text-white transition-colors" />
+        </a>
       </div>
 
       {/* Main Grid: Left = Experience & Education (7 cols), Right = LeetCode & Hackathons (5 cols) */}
