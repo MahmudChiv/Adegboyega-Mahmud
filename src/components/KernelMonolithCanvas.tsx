@@ -48,24 +48,20 @@ export default function KernelMonolithCanvas() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting
-    const ambientLight = new THREE.AmbientLight(0x0e1117, 2.2);
+    // 4. Lighting for outer frame
+    const ambientLight = new THREE.AmbientLight(0x222630, 2.5);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.5);
     keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.5);
+    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.0);
     rimLight.position.set(-5, -2, -2);
     scene.add(rimLight);
-
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    topLight.position.set(0, 6, 2);
-    scene.add(topLight);
 
     // 5. Monolith Hierarchy Group
     const monolithGroup = new THREE.Group();
@@ -119,13 +115,9 @@ export default function KernelMonolithCanvas() {
     canvasTexture.minFilter = THREE.LinearFilter;
     canvasTexture.magFilter = THREE.LinearFilter;
 
-    // Photo Physical Material
-    const photoMat = new THREE.MeshPhysicalMaterial({
+    // Use MeshBasicMaterial for 100% full brightness and true color without light falloff/dimming
+    const photoMat = new THREE.MeshBasicMaterial({
       map: canvasTexture,
-      roughness: 0.25,
-      metalness: 0.05,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.15,
     });
 
     const photoGeo = new THREE.PlaneGeometry(width * 0.91, height * 0.92);
@@ -226,22 +218,7 @@ export default function KernelMonolithCanvas() {
         drawCoverImage(toImg, Math.min(1, Math.max(0, progress)), toConf.focalX ?? 0.5, toConf.focalY ?? 0.5);
       }
 
-      // Dim effect vignette overlay for normal web view
-      if (!isMobile) {
-        const gradient = ctx.createRadialGradient(
-          canvas.width / 2,
-          canvas.height / 2,
-          canvas.width * 0.35,
-          canvas.width / 2,
-          canvas.height / 2,
-          canvas.width * 0.8
-        );
-        gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-        gradient.addColorStop(1, "rgba(8, 10, 15, 0.45)");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
+      // Keep photos vivid, punchy and 100% bright
       ctx.globalAlpha = 1.0;
       canvasTexture.needsUpdate = true;
     }
@@ -383,7 +360,7 @@ export default function KernelMonolithCanvas() {
       />
 
       {/* Floating Micro Slide Indicator */}
-      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full bg-[#0d0f11]/85 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white/50 pointer-events-none select-none">
+      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full bg-[#0d0f11]/85 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white/50 pointer-events-none select-none whitespace-nowrap">
         <span>PHOTO</span>
         <span className="text-accent font-semibold">0{currentSlide + 1}</span>
         <span>/</span>
