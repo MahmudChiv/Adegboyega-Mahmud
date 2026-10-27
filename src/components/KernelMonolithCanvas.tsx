@@ -25,6 +25,7 @@ export default function KernelMonolithCanvas() {
     if (!container) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let isMobile = window.innerWidth < 768;
 
     // 1. Scene setup
     const scene = new THREE.Scene();
@@ -47,24 +48,20 @@ export default function KernelMonolithCanvas() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting
-    const ambientLight = new THREE.AmbientLight(0x0e1117, 2.2);
+    // 4. Lighting for outer frame
+    const ambientLight = new THREE.AmbientLight(0x222630, 2.5);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.5);
     keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.5);
+    const rimLight = new THREE.DirectionalLight(0x8b7bf7, 4.0);
     rimLight.position.set(-5, -2, -2);
     scene.add(rimLight);
-
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    topLight.position.set(0, 6, 2);
-    scene.add(topLight);
 
     // 5. Monolith Hierarchy Group
     const monolithGroup = new THREE.Group();
@@ -73,17 +70,16 @@ export default function KernelMonolithCanvas() {
     // Frame Dimensions
     const width = 1.7;
     const height = 2.45;
-    const depth = 0.32;
+    const depth = 0.28;
 
     // Outer Obsidian Frame Mesh
     const outerGeo = new THREE.BoxGeometry(width, height, depth);
     const outerMat = new THREE.MeshPhysicalMaterial({
-      color: 0x090b10,
-      metalness: 0.95,
-      roughness: 0.18,
-      clearcoat: 0.8,
+      color: 0x0a0c10,
+      metalness: 0.9,
+      roughness: 0.2,
+      clearcoat: 0.7,
       clearcoatRoughness: 0.1,
-      reflectivity: 1.0,
     });
     const outerMesh = new THREE.Mesh(outerGeo, outerMat);
     monolithGroup.add(outerMesh);
@@ -93,7 +89,7 @@ export default function KernelMonolithCanvas() {
     const edgeMat = new THREE.LineBasicMaterial({
       color: 0x8b7bf7,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.6,
     });
     const wireframe = new THREE.LineSegments(edgeGeo, edgeMat);
     monolithGroup.add(wireframe);
@@ -119,15 +115,14 @@ export default function KernelMonolithCanvas() {
     canvasTexture.minFilter = THREE.LinearFilter;
     canvasTexture.magFilter = THREE.LinearFilter;
 
-    // Front Photo Plane
-    const photoGeo = new THREE.PlaneGeometry(width * 0.91, height * 0.92);
-    const photoMat = new THREE.MeshPhysicalMaterial({
+    // Use MeshBasicMaterial for 100% full brightness and true color without light falloff/dimming
+    const photoMat = new THREE.MeshBasicMaterial({
       map: canvasTexture,
-      roughness: 0.25,
-      metalness: 0.05,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.15,
     });
+
+    const photoGeo = new THREE.PlaneGeometry(width * 0.91, height * 0.92);
+
+    // Front Photo Plane
     const photoMesh = new THREE.Mesh(photoGeo, photoMat);
     photoMesh.position.z = depth / 2 + 0.002;
     monolithGroup.add(photoMesh);
@@ -141,6 +136,7 @@ export default function KernelMonolithCanvas() {
     // Preload Images
     const loadedImages: HTMLImageElement[] = [];
     let imagesReady = 0;
+    let initialDrawn = false;
 
     PHOTOS.forEach((photo, i) => {
       const img = new Image();
@@ -149,8 +145,14 @@ export default function KernelMonolithCanvas() {
       img.onload = () => {
         loadedImages[i] = img;
         imagesReady++;
-        if (imagesReady === 1) {
-          drawSlideshow(0, 0, 0);
+        if (!initialDrawn) {
+          if (i === 0 || loadedImages[0]) {
+            drawSlideshow(0, 0, 1);
+            initialDrawn = true;
+          } else if (imagesReady === 1) {
+            // Draw whatever loaded first until index 0 is ready
+            drawSlideshow(i, i, 1);
+          }
         }
       };
       // fallback in case optimized image fails to load
@@ -216,68 +218,36 @@ export default function KernelMonolithCanvas() {
         drawCoverImage(toImg, Math.min(1, Math.max(0, progress)), toConf.focalX ?? 0.5, toConf.focalY ?? 0.5);
       }
 
-      // Elegant film-grade dark vignette overlay
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width * 0.35,
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width * 0.85
-      );
-      gradient.addColorStop(0, "rgba(10, 12, 16, 0.0)");
-      gradient.addColorStop(1, "rgba(8, 10, 14, 0.55)");
-
+      // No dim vignette overlay: keep photos punchy, sharp, and vivid
       ctx.globalAlpha = 1.0;
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       canvasTexture.needsUpdate = true;
     }
 
     // 7. Initial Pose
-    monolithGroup.rotation.x = 0.22;
-    monolithGroup.rotation.y = -0.42;
-    monolithGroup.rotation.z = 0.06;
+    // On mobile: strictly straight and upright (0, 0, 0).
+    // On desktop: stately subtle isometric angle.
+    let targetRotX = isMobile ? 0 : 0.16;
+    let targetRotY = isMobile ? 0 : -0.32;
+    let currentRotX = targetRotX;
+    let currentRotY = targetRotY;
 
-    // 8. Mouse Tracking Physics
-    let targetRotX = 0.22;
-    let targetRotY = -0.42;
-    let currentRotX = 0.22;
-    let currentRotY = -0.42;
+    monolithGroup.rotation.x = currentRotX;
+    monolithGroup.rotation.y = currentRotY;
+    monolithGroup.rotation.z = 0;
 
+    // 8. Mouse Tracking Physics (Desktop only)
     const handlePointerMove = (e: MouseEvent) => {
-      if (prefersReducedMotion) return;
+      if (prefersReducedMotion || isMobile) return;
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      targetRotY = -0.42 + x * 0.50;
-      targetRotX = 0.22 - y * 0.40;
+      targetRotY = -0.32 + x * 0.40;
+      targetRotX = 0.16 - y * 0.30;
     };
 
     window.addEventListener("mousemove", handlePointerMove, { passive: true });
 
-    // Touch support for mobile phones
-    let touchStartX = 0;
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      }
-    };
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        const deltaX = (e.touches[0].clientX - touchStartX) / window.innerWidth;
-        const deltaY = (e.touches[0].clientY - touchStartY) / window.innerHeight;
-        targetRotY = -0.42 + deltaX * 0.8;
-        targetRotX = 0.22 - deltaY * 0.6;
-      }
-    };
-    container.addEventListener("touchstart", handleTouchStart, { passive: true });
-    container.addEventListener("touchmove", handleTouchMove, { passive: true });
-
-    // Click on monolith to advance photo manually
+    // Click/tap on monolith to advance photo manually
     const handleMonolithClick = () => {
       if (loadedImages.length <= 1) return;
       activeIdx = (activeIdx + 1) % loadedImages.length;
@@ -318,15 +288,22 @@ export default function KernelMonolithCanvas() {
       }
 
       if (!prefersReducedMotion) {
-        // Idle micro-buoyancy
-        monolithGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.05;
-        monolithGroup.rotation.z = 0.06 + Math.cos(elapsedTime * 0.8) * 0.015;
+        if (isMobile) {
+          // Mobile: strictly straight and upright, dancing gently up and down
+          monolithGroup.position.y = Math.sin(elapsedTime * 1.6) * 0.07;
+          monolithGroup.rotation.x = 0;
+          monolithGroup.rotation.y = 0;
+          monolithGroup.rotation.z = 0;
+        } else {
+          // Desktop: subtle idle buoyancy + mouse tracking
+          monolithGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.05;
+          monolithGroup.rotation.z = 0.03 + Math.cos(elapsedTime * 0.8) * 0.01;
 
-        // Smooth mouse tracking
-        currentRotX += (targetRotX - currentRotX) * 0.06;
-        currentRotY += (targetRotY - currentRotY) * 0.06;
-        monolithGroup.rotation.x = currentRotX;
-        monolithGroup.rotation.y = currentRotY;
+          currentRotX += (targetRotX - currentRotX) * 0.06;
+          currentRotY += (targetRotY - currentRotY) * 0.06;
+          monolithGroup.rotation.x = currentRotX;
+          monolithGroup.rotation.y = currentRotY;
+        }
       }
 
       renderer.render(scene, camera);
@@ -337,6 +314,17 @@ export default function KernelMonolithCanvas() {
     // 10. Resize
     const handleResize = () => {
       if (!container) return;
+      isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        targetRotX = 0;
+        targetRotY = 0;
+        currentRotX = 0;
+        currentRotY = 0;
+        monolithGroup.rotation.set(0, 0, 0);
+      } else {
+        targetRotX = 0.16;
+        targetRotY = -0.32;
+      }
       const w = container.clientWidth;
       const h = container.clientHeight;
       camera.aspect = w / h;
@@ -349,8 +337,6 @@ export default function KernelMonolithCanvas() {
     return () => {
       window.removeEventListener("mousemove", handlePointerMove);
       window.removeEventListener("resize", handleResize);
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
       container.removeEventListener("click", handleMonolithClick);
       cancelAnimationFrame(animationFrameId);
 
@@ -375,20 +361,19 @@ export default function KernelMonolithCanvas() {
     <div className="relative w-full h-full flex flex-col items-center justify-center">
       <div
         ref={mountRef}
-        className="w-full h-full min-h-105 sm:min-h-130 lg:min-h-155 cursor-grab active:cursor-grabbing pointer-events-auto"
+        className="w-full h-full min-h-[360px] sm:min-h-[480px] lg:min-h-[580px] cursor-pointer pointer-events-auto"
         aria-label="Interactive 3D Monolith Photo Frame"
       />
 
       {/* Floating Micro Slide Indicator */}
-      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full bg-[#0d0f11]/80 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white/50 pointer-events-none select-none">
+      <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 rounded-full bg-[#0d0f11]/85 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white/50 pointer-events-none select-none">
         <span>PHOTO</span>
         <span className="text-accent font-semibold">0{currentSlide + 1}</span>
         <span>/</span>
         <span>0{PHOTOS.length}</span>
         <span className="text-white/20">•</span>
-        <span className="text-[9px] text-white/30 hidden sm:inline">CLICK TO CYCLE</span>
+        <span className="text-[9px] text-white/40">TAP TO CYCLE</span>
       </div>
     </div>
   );
 }
-
