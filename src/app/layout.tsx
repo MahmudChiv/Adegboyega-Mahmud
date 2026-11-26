@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
+import "./portfolio.css";
 
 const mtnBrighterSans = localFont({
   src: [
@@ -16,6 +16,7 @@ const mtnBrighterSans = localFont({
 });
 
 export const metadata: Metadata = {
+  icons: { icon: [{ url: "/brand/ma-stamp.svg", type: "image/svg+xml" }] },
   title: "Mahmud Adegboyega — Software Engineer & Builder",
   description:
     "Full-stack engineer building production-ready software for startups, Africa’s businesses and informal economy, with a focus on solving real problems for real people and a long-term goal of founding a major African startup.",
@@ -47,10 +48,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${mtnBrighterSans.variable} dark antialiased`}
+      className={`${mtnBrighterSans.variable} antialiased`}
     >
       <body className="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)]/30 selection:text-white">
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   );

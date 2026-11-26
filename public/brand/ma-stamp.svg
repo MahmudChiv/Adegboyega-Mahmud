@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" fill="none">
+  <title>Mahmud Adegboyega — MA Stamp</title>
+  <defs>
+    <mask id="stencil" maskUnits="userSpaceOnUse" x="0" y="0" width="280" height="280">
+      <path fill="white" d="M12 12H230L268 50V268H50L12 230Z"/>
+      <path fill="black" d="M30 64H72L112 124L154 64H195L130 182H102L72 137V185H30Z"/>
+      <path fill="black" d="M30 192H72V232H30Z"/>
+      <path fill="black" d="M204 64H236L268 224H225L216 190H166L144 232H96L184 106Z"/>
+      <path fill="white" d="M197 116L207 155H174Z"/>
+      <path fill="white" d="M156 181H263V188H152Z"/>
+    </mask>
+  </defs>
+  <path fill="#b7c396" mask="url(#stencil)" d="M0 0H280V280H0Z"/>
+</svg>

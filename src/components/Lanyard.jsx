@@ -430,7 +430,25 @@ const paintFace = (canvas, image, color, fit, focalX, focalY) => {
   if (!ctx) return;
   ctx.fillStyle = toCss(color);
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  if (image) drawFitted(ctx, image, canvas.width, canvas.height, fit, focalX, focalY);
+  const inset = canvas.width * 0.045;
+  const top = canvas.height * 0.1;
+  const photoHeight = canvas.height * 0.72;
+  const photoWidth = canvas.width - inset * 2;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(inset, top, photoWidth, photoHeight);
+  ctx.clip();
+  ctx.translate(inset, top);
+  if (image) drawFitted(ctx, image, photoWidth, photoHeight, fit, focalX, focalY);
+  ctx.restore();
+  ctx.strokeStyle = '#171717';
+  ctx.lineWidth = 7;
+  ctx.strokeRect(inset, top, photoWidth, photoHeight);
+  ctx.fillStyle = '#171717';
+  ctx.font = 'bold 58px sans-serif';
+  ctx.fillText('MAHMUD', inset, canvas.height * 0.89);
+  ctx.font = '26px sans-serif';
+  ctx.fillText('SOFTWARE ENGINEER / LAGOS, NG', inset, canvas.height * 0.94);
 };
 
 const paintStrap = (canvas, image, color) => {
