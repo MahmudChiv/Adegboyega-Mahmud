@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
+const mtnBrighterSans = localFont({
+  src: [
+    { path: "./fonts/MTNBrighterSans-Light.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/MTNBrighterSans-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/MTNBrighterSans-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/MTNBrighterSans-Bold.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/MTNBrighterSans-ExtraBold.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-mtn-brighter-sans",
   display: "swap",
 });
 
@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${jetbrainsMono.variable} dark antialiased`}
+      className={`${mtnBrighterSans.variable} dark antialiased`}
     >
       <body className="min-h-screen bg-[var(--bg)] text-[var(--text)] selection:bg-[var(--accent)]/30 selection:text-white">
         <SmoothScroll>{children}</SmoothScroll>

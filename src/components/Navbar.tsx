@@ -45,19 +45,19 @@ export default function Navbar() {
               href="#projects"
               className="text-white/60 hover:text-white transition-colors"
             >
-              01 // WORK
+              WORK
             </Link>
             <Link
               href="#experience"
               className="text-white/60 hover:text-white transition-colors"
             >
-              02 // TRACK RECORD
+              TRACK RECORD
             </Link>
             <Link
               href="#contact"
               className="text-white/60 hover:text-white transition-colors"
             >
-              03 // CONTACT
+              CONTACT
             </Link>
           </nav>
 
@@ -131,21 +131,21 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/70 hover:text-white transition-colors"
             >
-              01 // WORK
+              WORK
             </Link>
             <Link
               href="#experience"
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/70 hover:text-white transition-colors"
             >
-              02 // TRACK RECORD
+              TRACK RECORD
             </Link>
             <Link
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/70 hover:text-white transition-colors"
             >
-              03 // CONTACT
+              CONTACT
             </Link>
           </nav>
 

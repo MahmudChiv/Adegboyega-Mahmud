@@ -21,8 +21,8 @@
   --accent-sage: #b7c396;
   --accent-glow: rgba(139, 123, 247, 0.18);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-mtn-brighter-sans);
+  --font-mono: var(--font-mtn-brighter-sans);
 }
 
 @theme inline {
@@ -37,8 +37,8 @@
   --color-accent-warm: var(--accent-warm);
   --color-accent-sage: var(--accent-sage);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-mtn-brighter-sans);
+  --font-mono: var(--font-mtn-brighter-sans);
 }
 
 html {
