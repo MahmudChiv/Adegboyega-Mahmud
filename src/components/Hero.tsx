@@ -1,8 +1,8 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
 
 // Dynamically import 3D Canvas with ssr: false so server render is instant
 const KernelMonolithCanvas = dynamic(
@@ -72,7 +72,7 @@ export default function Hero() {
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-all hover:scale-[1.02] active:scale-[0.98] text-center"
             >
               <span>EXPLORE SELECTED WORK</span>
-              <ArrowDown className="w-3.5 h-3.5 shrink-0 group-hover:translate-y-0.5 transition-transform" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 shrink-0 group-hover:translate-x-0.5 transition-transform" />
             </Link>
 
             <div className="flex items-center gap-2.5 sm:gap-4 w-full sm:w-auto">
@@ -83,7 +83,7 @@ export default function Hero() {
                 className="group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-full border border-white/15 hover:border-white/40 text-white/80 hover:text-white transition-all text-center"
               >
                 <span>WHATSAPP</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 shrink-0 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
               </a>
 
               <a
@@ -91,7 +91,7 @@ export default function Hero() {
                 className="group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-full border border-white/15 hover:border-white/40 text-white/80 hover:text-white transition-all text-center"
               >
                 <span>EMAIL</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0 text-white/40 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 shrink-0 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
               </a>
             </div>
           </div>

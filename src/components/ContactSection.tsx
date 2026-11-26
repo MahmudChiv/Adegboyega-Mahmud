@@ -1,12 +1,12 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import { useState, useEffect } from "react";
 import {
   Mail,
   MessageSquare,
   Copy,
   Check,
-  ArrowUpRight,
   Clock,
   ArrowUp,
 } from "lucide-react";
@@ -82,7 +82,7 @@ export default function ContactSection() {
               </div>
               <span className="font-mono text-[11px] text-white/40 group-hover:text-accent flex items-center gap-1 transition-colors">
                 DIRECT CHAT
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </span>
             </div>
             <span className="font-mono text-xs text-white/40 uppercase tracking-wider block mb-1">
@@ -185,7 +185,7 @@ export default function ContactSection() {
           className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
         >
           <span>CV (PDF)</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40" />
         </a>
         <a
           href="https://github.com/MahmudChiv"
@@ -194,7 +194,7 @@ export default function ContactSection() {
           className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
         >
           <span>GITHUB</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40" />
         </a>
         <a
           href="https://leetcode.com/u/mahmud_chiv/"
@@ -203,7 +203,7 @@ export default function ContactSection() {
           className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
         >
           <span>LEETCODE</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40" />
         </a>
         <a
           href="https://medium.com/@mahmud.adegboyega"
@@ -212,7 +212,7 @@ export default function ContactSection() {
           className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
         >
           <span>MEDIUM</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40" />
         </a>
         <a
           href="https://wa.me/2348164247735"
@@ -221,7 +221,7 @@ export default function ContactSection() {
           className="p-4 rounded-xl bg-white/2 border border-white/6 hover:border-white/20 hover:text-accent transition-colors flex items-center justify-between"
         >
           <span>WHATSAPP</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40" />
         </a>
       </div>
 

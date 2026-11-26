@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import { useState, useEffect } from "react";
 import {
   WORK_EXPERIENCES,
@@ -14,7 +15,6 @@ import {
   Terminal,
   ExternalLink,
   FileText,
-  ArrowUpRight,
 } from "lucide-react";
 
 export default function ExperienceSection() {
@@ -69,7 +69,7 @@ export default function ExperienceSection() {
         >
           <FileText className="w-3.5 h-3.5 text-white/60 group-hover:text-white transition-colors" />
           <span>VIEW FULL CV (PDF)</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/40 group-hover:text-white transition-colors" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/40 group-hover:text-white transition-colors" />
         </a>
       </div>
 

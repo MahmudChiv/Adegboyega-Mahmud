@@ -1,7 +1,8 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import { ARTICLES } from "@/data/writing";
-import { BookOpen, ArrowUpRight, Clock, FileText, Check } from "lucide-react";
+import { BookOpen, Clock, FileText, Check } from "lucide-react";
 
 export default function WritingSection() {
   return (
@@ -128,7 +129,7 @@ export default function WritingSection() {
                   aria-label={`Continue reading "${article.title}" on Medium`}
                 >
                   <span>Continue reading on Medium</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-accent transition-transform group-hover:translate-x-0.5" />
                 </a>
               </div>
             </div>
@@ -159,7 +160,7 @@ export default function WritingSection() {
           className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-white/90 text-black font-semibold text-xs tracking-wide transition-colors"
         >
           <span>Visit Medium Profile</span>
-          <ArrowUpRight className="w-3.5 h-3.5" />
+          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5" />
         </a>
       </div>
     </section>

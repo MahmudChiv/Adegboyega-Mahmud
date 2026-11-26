@@ -1,8 +1,9 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -82,7 +83,7 @@ export default function Navbar() {
               className="group flex items-center gap-1 text-white/80 hover:text-white transition-colors"
             >
               <span>CV</span>
-              <ArrowUpRight className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
             </a>
 
             {/* WhatsApp */}
@@ -93,7 +94,7 @@ export default function Navbar() {
               className="group flex items-center gap-1 text-white/70 hover:text-white transition-colors"
             >
               <span>WHATSAPP</span>
-              <ArrowUpRight className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
             </a>
 
             {/* Email */}
@@ -102,7 +103,7 @@ export default function Navbar() {
               className="group flex items-center gap-1 text-white/70 hover:text-white transition-colors"
             >
               <span>EMAIL</span>
-              <ArrowUpRight className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3 h-3 text-white/40 group-hover:text-white transition-colors" />
             </a>
           </div>
 
@@ -157,7 +158,7 @@ export default function Navbar() {
               className="flex items-center gap-1 text-white/90 hover:text-white font-medium"
             >
               <span>CV (PDF)</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-white/50" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 text-white/50" />
             </a>
             <a
               href="https://wa.me/2348164247735"
@@ -166,14 +167,14 @@ export default function Navbar() {
               className="flex items-center gap-1 text-white/80 hover:text-white"
             >
               <span>WHATSAPP</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5" />
             </a>
             <a
               href="mailto:mahmud.adegboyega@gmail.com"
               className="flex items-center gap-1 text-white/80 hover:text-white"
             >
               <span>EMAIL</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

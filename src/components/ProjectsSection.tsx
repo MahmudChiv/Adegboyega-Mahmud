@@ -1,8 +1,9 @@
 "use client";
 
+import { ArrowCircleRight } from "iconsax-reactjs";
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, MessageSquare, Mic, Layers, ShieldCheck, CheckCircle2, Code2 } from "lucide-react";
+import { MessageSquare, Mic, Layers, ShieldCheck, CheckCircle2, Code2 } from "lucide-react";
 import { PROJECTS, Project } from "@/data/projects";
 
 export default function ProjectsSection() {
@@ -132,7 +133,7 @@ export default function ProjectsSection() {
                         aria-label={`Open ${project.title}`}
                         className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
                       >
-                        <ArrowUpRight className="w-4 h-4" />
+                        <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-4 h-4" />
                       </a>
                     )}
                     {project.whatsappUrl && (
@@ -189,7 +190,7 @@ export default function ProjectsSection() {
                           className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-white text-black font-medium text-xs hover:bg-white/90 transition-all whitespace-nowrap"
                         >
                           <span>Live Product</span>
-                          <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                          <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
                         </a>
                       )}
 
@@ -302,7 +303,7 @@ export default function ProjectsSection() {
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-black font-medium text-xs"
                   >
                     <span>Visit Live Application</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <ArrowCircleRight variant="Bold" color="currentColor" aria-hidden="true" className="w-3.5 h-3.5" />
                   </a>
                 )}
                 {selectedProject.whatsappUrl && (
