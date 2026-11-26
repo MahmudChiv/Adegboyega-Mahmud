@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 
 // Dynamically import 3D Canvas with ssr: false so server render is instant
-const KernelMonolithCanvas = dynamic(
-  () => import("@/components/KernelMonolithCanvas"),
+const LanyardSlideshow = dynamic(
+  () => import("@/components/LanyardSlideshow"),
   {
     ssr: false,
     loading: () => (
@@ -97,18 +97,18 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Column: Unbounded Atmospheric 3D Canvas (5 cols) */}
+        {/* Hanging photo lanyard */}
         <div className="lg:col-span-5 relative flex items-center justify-center">
           {/* Spatial Ambient Radial Glow */}
           <div className="absolute w-[360px] sm:w-[480px] h-[360px] sm:h-[480px] rounded-full bg-gradient-to-tr from-[var(--accent)]/15 via-[var(--accent-warm)]/10 to-transparent blur-3xl pointer-events-none -z-10" />
 
-          {/* 3D Canvas Viewport (Free-floating, no boxed card container) */}
+          {/* Interactive lanyard and slideshow controls */}
           <div
             id="hero-3d-slot"
             data-slot="hero"
             className="w-full h-[400px] sm:h-[520px] lg:h-[600px] relative flex items-center justify-center"
           >
-            <KernelMonolithCanvas />
+            <LanyardSlideshow />
           </div>
         </div>
       </div>
