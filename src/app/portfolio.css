@@ -24,7 +24,7 @@
 }
 
 * { box-sizing: border-box; }
-html { color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 110px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 110px; }
 body { margin: 0; background: var(--bg); background-image: var(--field-grid); background-size: var(--field-grid-size); color: var(--text); font-family: var(--font-sans), sans-serif; -webkit-font-smoothing: antialiased; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; font: inherit; }
@@ -268,9 +268,6 @@ html:has(dialog[open]) { overflow: hidden; }
   .project-navigation button { width: 40px; height: 40px; }
   .lanyard-stage { height: 440px; }
 }
-.project-track[data-reduced="true"] .project-stage { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,320px),1fr)); overflow: visible; }
-.project-track[data-reduced="true"] .project-card { min-width: 0; max-width: none; }
-.project-track[data-reduced="true"] .project-navigation { display: none; }
 .project-track[data-enhanced="false"][data-reduced="false"] .project-card { align-self: stretch; }
 .project-visual { overflow: hidden; }
 .voice-demo { padding: 8px 16px; }
@@ -354,4 +351,41 @@ html:has(dialog[open]) { overflow: hidden; }
   .project-track[data-enhanced="true"] .project-copy h3 { font-size: 24px; margin-bottom: 6px; }
   .project-track[data-enhanced="true"] .project-copy .eyebrow { margin-bottom: 4px; }
   .project-track[data-enhanced="true"] .project-heading { margin-bottom: 8px; }
+}
+
+/* Size mobile headings against their available space, not a desktop minimum.
+   Text-size-adjust above prevents automatic mobile inflation; zoom stays enabled. */
+@media (max-width: 767px) {
+  .shell { width: calc(100% - clamp(24px, 8vw, 40px)); }
+  .hero-copy { min-width: 0; container-type: inline-size; }
+  .hero-copy h1 { font-size: clamp(30px, 12.5cqw, 78px); }
+  .headline-mark { white-space: nowrap; padding-inline: .15em; }
+  .hero-actions { gap: 12px; }
+  .hero-actions .button {
+    font-size: clamp(12px, 3.6cqw, 14px);
+    padding-inline: clamp(10px, 3.5cqw, 16px);
+    gap: 8px;
+  }
+  #experience > .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px 12px;
+  }
+  #experience > .section-heading > div { display: contents; }
+  #experience > .section-heading .eyebrow { grid-area: 1 / 1; margin: 0; }
+  #experience > .section-heading > .text-link {
+    grid-area: 1 / 2;
+    white-space: nowrap;
+    padding-block: 0;
+  }
+  #experience > .section-heading h2 {
+    grid-column: 1 / -1;
+    font-size: clamp(30px, 10vw, 42px);
+  }
+  .experience-row summary { grid-template-columns: 24px minmax(0, 1fr) 28px; }
+  .experience-row summary strong { font-size: clamp(18px, 5vw, 20px); }
+  .experience-row .role-name { font-size: clamp(14px, 4vw, 16px); }
+  .experience-details { padding-left: clamp(12px, 6vw, 34px); }
+  .experience-details ul { overflow-wrap: anywhere; }
 }

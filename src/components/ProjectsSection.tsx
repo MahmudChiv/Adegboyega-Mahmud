@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Mic, X, ChevronRight, ChevronLeft } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/projects";
 import CTAIcon from "./CTAIcon";
-import ScrollIcon from "./ScrollIcon";
 
 const summaries = [
   "Bookkeeping that starts with a voice note. Built for traders who run their business on WhatsApp.",
@@ -36,11 +35,11 @@ export default function ProjectsSection() {
     const paint = () => {
       frame = 0;
       track.dataset.reduced = String(reduced.matches);
-      track.dataset.enhanced = String(!reduced.matches);
+      track.dataset.enhanced = "true";
       const distance = Math.max(0, stage.scrollWidth - stage.clientWidth);
       track.dataset.overflow = String(distance > 1);
       // Native vertical page scrolling drives the row at every viewport size.
-      const enhanced = !reduced.matches && distance > 1;
+      const enhanced = distance > 1;
       track.dataset.enhanced = String(enhanced);
       track.style.setProperty("--project-travel", `${distance}px`);
       if (enhanced) {
@@ -50,13 +49,20 @@ export default function ProjectsSection() {
           0,
           Math.min(1, (top - track.getBoundingClientRect().top) / travel),
         );
-        stage.scrollLeft = progress * distance;
+        // Keep the same layout for reduced motion, but advance in discrete
+        // steps instead of continuously panning across the viewport.
+        const position = reduced.matches
+          ? Math.round(progress * (PROJECTS.length - 1)) / (PROJECTS.length - 1)
+          : progress;
+        stage.scrollLeft = position * distance;
       }
       updateActive();
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(paint);
     };
+    const observer = new ResizeObserver(schedule);
+    observer.observe(stage);
     reduced.addEventListener("change", schedule);
     stage.addEventListener("scroll", updateActive, { passive: true });
     window.addEventListener("scroll", schedule, { passive: true });
@@ -64,6 +70,7 @@ export default function ProjectsSection() {
     schedule();
     return () => {
       cancelAnimationFrame(frame);
+      observer.disconnect();
       stage.removeEventListener("scroll", updateActive);
       reduced.removeEventListener("change", schedule);
       window.removeEventListener("scroll", schedule);
@@ -81,7 +88,9 @@ export default function ProjectsSection() {
     if (track.dataset.enhanced !== "true") {
       stage.scrollTo({
         left: progress * (stage.scrollWidth - stage.clientWidth),
-        behavior: "smooth",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
       });
       return;
     }
